@@ -54,7 +54,22 @@ class ShapesDemoScreen extends StatelessWidget {
                 size: const Size(double.infinity, 250),
               ),
             ),
-            // --------------------------------
+            const SizedBox(height: 30),
+
+            // ---------- NEW SECTION ----------
+            const Text(
+              'Task 3: Blue Rounded Heart',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              height: 250,
+              child: CustomPaint(
+                painter: BlueHeartPainter(),
+                size: const Size(double.infinity, 250),
+              ),
+            ),
+            // ---------------------------------
           ],
         ),
       ),
@@ -90,23 +105,22 @@ class SmileyPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-//NEW PAINTER CLASS
 class PartyFacePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final c = Offset(size.width / 2, size.height / 2);
     final p = Paint()..style = PaintingStyle.fill;
 
-    //base yellow face
+    // base yellow face
     p.color = Colors.yellow;
     canvas.drawCircle(c, 100, p);
 
-    //eyes
+    // eyes
     p.color = Colors.black;
     canvas.drawCircle(Offset(c.dx - 35, c.dy - 30), 15, p);
     canvas.drawCircle(Offset(c.dx + 35, c.dy - 30), 15, p);
 
-    //smile
+    // smile
     final smile = Rect.fromCircle(center: c, radius: 70);
     final smilePaint = Paint()
       ..color = Colors.black
@@ -114,7 +128,7 @@ class PartyFacePainter extends CustomPainter {
       ..strokeWidth = 8;
     canvas.drawArc(smile, 0.1 * pi, 0.8 * pi, false, smilePaint);
 
-    //party hat
+    // party hat
     p.color = Colors.purple;
     final hat = Path()
       ..moveTo(c.dx - 60, c.dy - 100)
@@ -123,7 +137,7 @@ class PartyFacePainter extends CustomPainter {
       ..close();
     canvas.drawPath(hat, p);
 
-    //confetti pieces
+    // confetti pieces
     p.color = Colors.red;
     canvas.drawCircle(Offset(c.dx + 80, c.dy - 40), 8, p);
 
@@ -139,6 +153,33 @@ class PartyFacePainter extends CustomPainter {
 
     p.color = Colors.blue;
     canvas.drawCircle(Offset(c.dx + 40, c.dy + 60), 6, p);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
+// ---------- NEW PAINTER CLASS ----------
+class BlueHeartPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final c = Offset(size.width / 2, size.height / 2);
+    final p = Paint()
+      ..color = Colors.blue
+      ..style = PaintingStyle.fill;
+
+    // A smoother, rounder heart using cubic Bezier curves
+    final path = Path()
+      ..moveTo(c.dx, c.dy + 40)
+      ..cubicTo(c.dx + 100, c.dy - 20,
+                c.dx + 60,  c.dy - 140,
+                c.dx,       c.dy - 40)
+      ..cubicTo(c.dx - 60, c.dy - 140,
+                c.dx - 100, c.dy - 20,
+                c.dx,       c.dy + 40)
+      ..close();
+
+    canvas.drawPath(path, p);
   }
 
   @override
