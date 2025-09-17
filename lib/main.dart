@@ -56,7 +56,6 @@ class ShapesDemoScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
 
-            // ---------- NEW SECTION ----------
             const Text(
               'Task 3: Blue Rounded Heart',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -69,7 +68,6 @@ class ShapesDemoScreen extends StatelessWidget {
                 size: const Size(double.infinity, 250),
               ),
             ),
-            // ---------------------------------
           ],
         ),
       ),
@@ -83,16 +81,16 @@ class SmileyPainter extends CustomPainter {
     final c = Offset(size.width / 2, size.height / 2);
     final p = Paint()..style = PaintingStyle.fill;
 
-    // face
+    //face
     p.color = Colors.yellow;
     canvas.drawCircle(c, 100, p);
 
-    // eyes
+    //eyes
     p.color = Colors.black;
     canvas.drawCircle(Offset(c.dx - 35, c.dy - 30), 15, p);
     canvas.drawCircle(Offset(c.dx + 35, c.dy - 30), 15, p);
 
-    // smile
+    //smile
     final smile = Rect.fromCircle(center: c, radius: 70);
     final smilePaint = Paint()
       ..color = Colors.black
@@ -111,16 +109,15 @@ class PartyFacePainter extends CustomPainter {
     final c = Offset(size.width / 2, size.height / 2);
     final p = Paint()..style = PaintingStyle.fill;
 
-    // base yellow face
     p.color = Colors.yellow;
     canvas.drawCircle(c, 100, p);
 
-    // eyes
+    //eyes
     p.color = Colors.black;
     canvas.drawCircle(Offset(c.dx - 35, c.dy - 30), 15, p);
     canvas.drawCircle(Offset(c.dx + 35, c.dy - 30), 15, p);
 
-    // smile
+    //smile
     final smile = Rect.fromCircle(center: c, radius: 70);
     final smilePaint = Paint()
       ..color = Colors.black
@@ -128,38 +125,54 @@ class PartyFacePainter extends CustomPainter {
       ..strokeWidth = 8;
     canvas.drawArc(smile, 0.1 * pi, 0.8 * pi, false, smilePaint);
 
-    // party hat
+    //party hat
     p.color = Colors.purple;
     final hat = Path()
       ..moveTo(c.dx - 60, c.dy - 100)
       ..lineTo(c.dx + 60, c.dy - 100)
-      ..lineTo(c.dx, c.dy - 200)
+      ..lineTo(c.dx, c.dy - 260)
       ..close();
     canvas.drawPath(hat, p);
 
-    // confetti pieces
-    p.color = Colors.red;
-    canvas.drawCircle(Offset(c.dx + 80, c.dy - 40), 8, p);
+    //Enhanced Confetti
+    final rand = Random();
+    final confettiColors = [
+      Colors.red,
+      Colors.green,
+      Colors.blue,
+      Colors.orange,
+      Colors.pink,
+      Colors.teal,
+      Colors.deepPurple,
+    ];
 
-    p.color = Colors.green;
-    canvas.drawRect(
-      Rect.fromCenter(
-        center: Offset(c.dx - 80, c.dy + 20),
-        width: 15,
-        height: 15,
-      ),
-      p,
-    );
+    //scatter multiple shapes randomly around the face
+    for (int i = 0; i < 20; i++) {
+      final color = confettiColors[rand.nextInt(confettiColors.length)];
+      p.color = color;
 
-    p.color = Colors.blue;
-    canvas.drawCircle(Offset(c.dx + 40, c.dy + 60), 6, p);
+    //random position near the face area
+      final dx = c.dx + rand.nextDouble() * 200 - 100;
+      final dy = c.dy + rand.nextDouble() * 200 - 100;
+
+      //random shape type: circle or small square
+      if (rand.nextBool()) {
+        final radius = 3 + rand.nextDouble() * 4;
+        canvas.drawCircle(Offset(dx, dy), radius, p);
+      } else {
+        final sizeSq = 6 + rand.nextDouble() * 4;
+        canvas.drawRect(
+          Rect.fromCenter(center: Offset(dx, dy), width: sizeSq, height: sizeSq),
+          p,
+        );
+      }
+    }
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-// ---------- NEW PAINTER CLASS ----------
 class BlueHeartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -168,7 +181,7 @@ class BlueHeartPainter extends CustomPainter {
       ..color = Colors.blue
       ..style = PaintingStyle.fill;
 
-    // A smoother, rounder heart using cubic Bezier curves
+    //A smoother, rounder heart using cubic Bezier curves
     final path = Path()
       ..moveTo(c.dx, c.dy + 40)
       ..cubicTo(c.dx + 100, c.dy - 20,
